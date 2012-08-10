@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sync.js</title>
+    <!--<link rel="stylesheet" href="css/style.css">-->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+    <script type="text/javascript">
+      if (typeof jQuery == 'undefined') {
+        document.write(unescape("%3Cscript src='../js/jquery-1.7.2.min.js' type='text/javascript'%3E%3C/script%3E"));
+      }
+    </script>
+    <script type="text/javascript" src="../js/jquery.gridImage.js"></script>
+  </head>
+  <body>
+    <img id="image1" src="http://www.lefigaro.fr/medias/2012/07/18/47b7a728-d0e1-11e1-a628-59791bd8e8f1-493x328.jpg" />
+    <script>
+      $(document).ready(function() {
+        grid = $('#image1').gridImage();
+console.log(grid);
+      });
+    </script>
+    <!--<img id="image2" rel="gridImage" src="http://www.lefigaro.fr/medias/2012/07/18/47b7a728-d0e1-11e1-a628-59791bd8e8f1-493x328.jpg" />-->
+  </body>
+</html>
