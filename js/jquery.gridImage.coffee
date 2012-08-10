@@ -10,7 +10,7 @@
                 top: 10
                 right: 10
                 bottom: 10
-                backgroundColor: 'rgba(255, 0, 0, 0.3)' # transparent
+                backgroundColor: 'rgba(255, 0, 0, 0.05)' # transparent
                 gridColor: 'white'
                 container: $('body')
                 updateOrigin: false # not yet working
@@ -19,8 +19,10 @@
         class Plugin
                 constructor: (options) ->
                         @options = $.extend {}, defaults, options
-
-                        @options.container.load =>
+                        if @options.container.is("img")
+                                @options.container.load =>
+                                        @update()
+                        else
                                 @update()
 
                 initGradients: =>
@@ -29,10 +31,10 @@
                         @gradients.push "left, transparent #{@options.width  - 1}px, #{@options.gridColor} #{@options.width}px"
 
                 build: =>
-                        @imgSrc = @options.container.attr 'src'
                         @width = @options.container.width()
                         @height = @options.container.height()
                         if @options.updateOrigin
+                                @imgSrc = @options.container.attr 'src'
                                 @grid = $('<div></div>').css
                                                 width: @width
                                                 height: @height
@@ -50,10 +52,10 @@
                         if not @options.updateOrigin
                                 containerPosition = @options.container.position()
                                 @grid.css
-                                        top: containerPosition.top + @options.top
-                                        left: containerPosition.left + @options.left
-                                        width: @width - @options.left - @options.right
-                                        height: @height - @options.top - @options.bottom
+                                        top: containerPosition.top + parseInt(@options.top)
+                                        left: containerPosition.left + parseInt(@options.left)
+                                        width: @width - parseInt(@options.left) - parseInt(@options.right)
+                                        height: @height - parseInt(@options.top) - parseInt(@options.bottom)
                                         backgroundColor: @options.backgroundColor
                         @grid.css
                                 backgroundSize: "#{@options.width}px #{@options.height}px"
@@ -66,12 +68,15 @@
                                 @grid.css 'background-image', compiledGradient
 
         $.fn[pluginName] = (options) ->
-                @each ->
+                if options == 'getObject'
+                        return this.data "plugin_#{pluginName}"
+                return @each ->
                         if !$.data this, "plugin_#{pluginName}"
                                 options =
                                         container: $(this)
                                 newPlugin = new Plugin options
                                 $.data @, "plugin_#{pluginName}", newPlugin
+                        return $.data @, "plugin_#{pluginName}"
 
         $(document).ready ->
                 $('[rel="#{pluginName}"]').each ->

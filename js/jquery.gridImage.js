@@ -16,7 +16,7 @@
       top: 10,
       right: 10,
       bottom: 10,
-      backgroundColor: 'rgba(255, 0, 0, 0.3)',
+      backgroundColor: 'rgba(255, 0, 0, 0.05)',
       gridColor: 'white',
       container: $('body'),
       updateOrigin: false,
@@ -33,9 +33,13 @@
 
         var _this = this;
         this.options = $.extend({}, defaults, options);
-        this.options.container.load(function() {
-          return _this.update();
-        });
+        if (this.options.container.is("img")) {
+          this.options.container.load(function() {
+            return _this.update();
+          });
+        } else {
+          this.update();
+        }
       }
 
       Plugin.prototype.initGradients = function() {
@@ -45,10 +49,10 @@
       };
 
       Plugin.prototype.build = function() {
-        this.imgSrc = this.options.container.attr('src');
         this.width = this.options.container.width();
         this.height = this.options.container.height();
         if (this.options.updateOrigin) {
+          this.imgSrc = this.options.container.attr('src');
           this.grid = $('<div></div>').css({
             width: this.width,
             height: this.height,
@@ -70,10 +74,10 @@
         if (!this.options.updateOrigin) {
           containerPosition = this.options.container.position();
           this.grid.css({
-            top: containerPosition.top + this.options.top,
-            left: containerPosition.left + this.options.left,
-            width: this.width - this.options.left - this.options.right,
-            height: this.height - this.options.top - this.options.bottom,
+            top: containerPosition.top + parseInt(this.options.top),
+            left: containerPosition.left + parseInt(this.options.left),
+            width: this.width - parseInt(this.options.left) - parseInt(this.options.right),
+            height: this.height - parseInt(this.options.top) - parseInt(this.options.bottom),
             backgroundColor: this.options.backgroundColor
           });
         }
@@ -104,6 +108,9 @@
 
     })();
     $.fn[pluginName] = function(options) {
+      if (options === 'getObject') {
+        return this.data("plugin_" + pluginName);
+      }
       return this.each(function() {
         var newPlugin;
         if (!$.data(this, "plugin_" + pluginName)) {
@@ -111,8 +118,9 @@
             container: $(this)
           };
           newPlugin = new Plugin(options);
-          return $.data(this, "plugin_" + pluginName, newPlugin);
+          $.data(this, "plugin_" + pluginName, newPlugin);
         }
+        return $.data(this, "plugin_" + pluginName);
       });
     };
     return $(document).ready(function() {
