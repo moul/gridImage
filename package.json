@@ -1,0 +1,14 @@
+{
+  "name":         "grid-image",
+  "description":  "Add grid to image",
+  "keywords":     ["javascript", "html5", "jquery", "image", "grid"],
+  "author":       "Manfred Touron",
+  "version":      "1.0",
+  "licenses":     [{
+    "type":       "MIT",
+    "url":        "https://raw.github.com/moul/imageGrid/master/LICENSE"
+  }],
+  "dependencies":      {
+    "jquery":       ">=1.2"
+  }
+}
