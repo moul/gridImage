@@ -1,6 +1,8 @@
 gridImage
 =========
 
+[![GuardRails badge](https://badges.production.guardrails.io/moul/gridImage.svg)](https://www.guardrails.io)
+
 Add a grid to an image (html5 + jQuery plugin)
 
 
